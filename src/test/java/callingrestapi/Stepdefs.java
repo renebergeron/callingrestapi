@@ -24,7 +24,7 @@ public class Stepdefs {
         int status = con.getResponseCode();
         System.out.println("Status = " + status);
         
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
         String inputLine;
         StringBuffer content = new StringBuffer();
         while((inputLine = in.readLine()) != null) {
