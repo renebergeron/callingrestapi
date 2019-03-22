@@ -46,32 +46,50 @@ public class Stepdefs {
         assertNotNull(content);
     }
 
-    @Then("^valid the json formant$")
+    @Then("^valid the json format$")
     public void valid_the_json_formant() throws Exception {
     	JsonArray arr = new JsonParser().parse(content.toString()).getAsJsonArray();
 
-    	assertNotNull("The fucking object shouldn't be null", arr);
+    	assertNotNull("La list ne devrait pas être null", arr);
         for (int i = 0; i < arr.size(); i++) {
           JsonObject obj = arr.get(i).getAsJsonObject();
-          String productId = obj.get("idProduit").getAsString();
-          String productCode = obj.get("codeProduit").getAsString();
-          String codePack = obj.get("codePack").getAsString();
-//          String libelleProduit = obj.get("libelleProduit").getAsString();
-//          String epjAnnonceur = obj.get("epjAnnonceur").getAsString();
-//          String epjNegociateur = obj.get("epjNegociateur").getAsString();
-//          String epjBeneficiaire = obj.get("epjBeneficiaire").getAsString();
-//          String etatProduit = obj.get("etatProduit").getAsString();
-          System.out.println("productId : " + productId);
-          System.out.println("codeProduit : " + productCode);
-//          System.out.println("codePack : " + codePack);
-//          System.out.println("epjAnnonceur : " + epjAnnonceur);
-//          System.out.println("epjNegociateur : " + epjNegociateur);
-//          System.out.println("epjBeneficiaire : " + epjBeneficiaire);
-//          System.out.println("etatProduit : " + etatProduit);
+          
+          assertTrue("La balise idProduit est absente.", obj.has("idProduit"));
+          assertTrue("La balise productCode est absente.", obj.has("codeProduit"));
+          assertTrue("La balise codePack est absente.", obj.has("codePack"));
+          assertTrue("La balise libelleProduit est absente.", obj.has("libelleProduit"));
+          assertTrue("La balise epjAnnonceur est absente.", obj.has("epjAnnonceur"));
+          assertTrue("La balise epjNegociateur est absente.", obj.has("epjNegociateur"));
+          assertTrue("La balise epjNegociateur est absente.", obj.has("epjNegociateur"));
+          assertTrue("La balise etatProduit est absente.", obj.has("etatProduit"));
+          assertTrue("La balise dateSouscription est absente.", obj.has("dateSouscription"));
+          assertTrue("La balise dateDebutParution est absente.", obj.has("dateDebutParution"));
+          assertTrue("La balise dateFinParution est absente.", obj.has("dateFinParution"));
+          assertTrue("La balise dateDebutFacturation est absente.", obj.has("dateDebutFacturation"));
+          assertTrue("La balise dateFinFacturation est absente.", obj.has("dateFinFacturation"));
+          assertTrue("La balise dateDemandeAnnulation est absente.", obj.has("dateDemandeAnnulation"));
+          assertTrue("La balise origine est absente.", obj.has("origine"));
+          assertTrue("La balise engagement est absente.", obj.has("engagement"));
+          assertTrue("La balise periodeEssai est absente.", obj.has("periodeEssai"));
 
-        }
-    	System.out.println("The content of the API is => " + content);
-    	// Do somme validation on the json format if possible
+          if (!obj.get("periodeEssai").isJsonNull()) {
+        	  JsonObject periodeEssai = obj.get("periodeEssai").getAsJsonObject();
+              assertTrue("La balise dateDebut de l'objet periodeEssai est absente.", periodeEssai.has("dateDebut"));
+              assertTrue("La balise dateFin de l'objet periodeEssai est absente.", periodeEssai.has("dateFin"));
+          }
+          
+          if (!obj.get("options").isJsonNull()) {
+	    	  JsonArray options = obj.get("options").getAsJsonArray();
+	    	  
+	          for (int j = 0; j < options.size(); i++) {
+	              JsonObject option = options.get(i).getAsJsonObject();
+	
+	              assertTrue("La balise codeOption de l'objet option est absente.", option.has("codeOption"));
+	              assertTrue("La balise libelleOption de l'objet option est absente.", option.has("libelleOption"));
+	              assertTrue("La balise quantite de l'objet option est absente.", option.has("quantite"));
+	          }
+	          }
+        	}
     }
 
     @Then("^tester les donnees$")
